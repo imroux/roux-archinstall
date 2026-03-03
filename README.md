@@ -1,9 +1,9 @@
-# noir-archinstall
+# roux-archinstall
 
 This is a script to automate the process of setting up Arch Linux. It is
 primarily intended to be run on a fresh installation of Arch.
 
-> 📝 NOTE: master branch corresponds to matugen version of noir-dotfiles and
+> 📝 NOTE: master branch corresponds to matugen version of rouxshell and
 > installs the packages that version needs. For the catppuccin version, please
 > switch to catppuccin branch of the current repo.
 
@@ -18,7 +18,7 @@ As a regular user run the following commands from any directory under your user
 folder.
 
 ```
-git clone --depth 1 https://github.com/somanoir/noir-archinstall.git
-cd noir-archinstall
+git clone --depth 1 https://github.com/imroux/roux-archinstall.git
+cd roux-archinstall
 ./setup-arch.sh
 ```
