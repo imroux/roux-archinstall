@@ -70,9 +70,10 @@ packages_common_utils=(
   "brightnessctl"
   "bluez"
   "bluez-utils"
+  "blueman"
   "iwd"
   "wireless_tools"
-  "rofi-bluetooth-git"
+  # "rofi-bluetooth-git"
   "networkmanager-dmenu"
   "network-manager-applet"
   "openvpn"
@@ -100,6 +101,7 @@ packages_common_utils=(
   "ffmpegthumbnailer"
   "ffmpegthumbs"
   "sshpass"
+  "wtype"
 
   # Audio utils
   "playerctl"
@@ -138,6 +140,7 @@ packages_common_utils=(
   "python-pip"
   "python-pipx"
   "python3-gobject"
+  "dart-sass"
 
   # Container management
   "podman"
@@ -150,7 +153,7 @@ packages_common_utils=(
   "tela-circle-icon-theme-dracula"
   "qt5ct-kde"
   "qt6ct-kde"
-  "quickshell"
+  "quickshell-git"
 
   # Shell & terminal utils
   "zsh"
@@ -211,7 +214,6 @@ packages_hyprland=(
   "hyprshot"
   "xdg-desktop-portal-hyprland"
   "hyprlock"
-  "pyprland"
   "hypridle"
   "uwsm"
 )
@@ -244,6 +246,7 @@ packages_apps=(
   "firefox"
   "librewolf-bin"
   "brave-bin"
+  "zen-browser-bin"
 
   # Text & hex editors
   "neovim"
