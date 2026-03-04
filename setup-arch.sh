@@ -16,7 +16,7 @@ install_packages() {
     echo "----------------------------------------"
 
     # Check if package is already installed
-    if paru -Q "$package" >/dev/null 2>&1; then
+    if yay -Q "$package" >/dev/null 2>&1; then
       echo "✓ Package $package is already installed"
       ((installed_count++))
       echo
@@ -24,7 +24,7 @@ install_packages() {
     fi
 
     # Try to install the package
-    if paru -S --noconfirm "$package"; then
+    if yay -S --noconfirm "$package"; then
       echo "✓ Successfully installed: $package"
       ((installed_count++))
     else
@@ -412,11 +412,11 @@ install_microcode() {
   case "$choice_microcode" in
   Intel)
     echo "→ Installing Intel microcode..."
-    paru -S --needed --noconfirm intel-ucode
+    yay -S --needed --noconfirm intel-ucode
     ;;
   AMD)
     echo "→ Installing AMD microcode..."
-    paru -S --needed --noconfirm amd-ucode
+    yay -S --needed --noconfirm amd-ucode
     ;;
   None) echo "→ Skipping installation of microcode..." ;;
   esac
@@ -565,19 +565,19 @@ echo "→ Installing Rust..."
 sudo pacman -S --needed --noconfirm rustup
 rustup default stable
 
-# Install paru AUR Helper
-check_paru="$(sudo pacman -Qs paru | grep "local" | grep "paru")"
-if [ -n "${check_paru}" ]; then
-  echo "→ Installing paru..."
-  sudo pacman -S --needed --noconfirm base-devel
-  git clone https://aur.archlinux.org/paru.git /tmp/paru
-  cd /tmp/paru
+# Install yay AUR Helper
+check_yay="$(sudo pacman -Qs yay | grep "local" | grep "yay")"
+if [ -n "${check_yay}" ]; then
+  echo "→ Installing yay..."
+  sudo pacman -S --needed --noconfirm git base-devel
+  git clone https://aur.archlinux.org/yay.git /tmp/yay
+  cd /tmp/yay
   makepkg -si --needed --noconfirm
 fi
 
 # Do an initial update
 echo "→ Updating the system..."
-paru -Syu --needed --noconfirm
+yay -Syu --needed --noconfirm
 
 # Install required packages
 echo "→ Installing utility packages..."
