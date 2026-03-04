@@ -350,8 +350,8 @@ set_variables() {
   choice_wm=$(gum choose "hyprland" "niri" "awesome" "i3" --no-limit --header "Choose window managers to be installed.")
   choice_apps=$(gum choose "Yes" "No" --header "Would you like to install apps (browsers, file managers, terminal emulators, etc.)?")
   choice_gaming_tools=$(gum choose "Yes" "No" --header "Would you like to install gaming tools?")
-  choice_dotfiles=$(gum choose "Yes" "No" --header "Would you like to install Noir Dotfiles?")
-  choice_wallpapers=$(gum choose "Yes" "No" --header "Would you like to install Noir Wallpapers?")
+  choice_dotfiles=$(gum choose "Yes" "No" --header "Would you like to install rouxshell?")
+  choice_wallpapers=$(gum choose "Yes" "No" --header "Would you like to install Roux Wallpapers?")
 }
 
 setup_backup_hook() {
@@ -473,19 +473,19 @@ install_flatpaks() {
 install_dotfiles() {
   case "$choice_dotfiles" in
   Yes)
-    echo "→ Installing Noir Dotfiles..."
+    echo "→ Installing rouxshell..."
 
     cd ~ || exit
     case "$choice_wallpapers" in
     Yes)
-      git clone --depth 1 --recurse-submodules https://github.com/seijileroux/.noir-dotfiles.git
+      git clone --depth 1 --recurse-submodules https://github.com/imroux/rouxshell.git /home/$USER/.local/share/rouxshell
       ;;
     No)
-      git clone --depth 1 https://github.com/seijileroux/.noir-dotfiles.git
+      git clone --depth 1 https://github.com/imroux/rouxshell.git /home/$USER/.local/share/rouxshell
       ;;
     esac
-    cd .noir-dotfiles || exit
-    stow .
+    cd /home/$USER/.local/share/rouxshell || exit
+    stow . -t /home/$USER
 
     bat cache --build
     sudo flatpak override --filesystem=xdg-data/themes
@@ -493,17 +493,17 @@ install_dotfiles() {
 
     # Link user configs with root configs
     sudo mkdir /root/.config
-    sudo ln -sf /home/$USER/.noir-dotfiles/.zshrc /root/.zshrc
-    sudo ln -s /home/$USER/.noir-dotfiles/.config/zsh /root/.config/zsh
-    sudo ln -sf /home/$USER/.noir-dotfiles/.config/starship.toml /root/.config/starship.toml
-    sudo ln -s /home/$USER/.noir-dotfiles/.config/nvim /root/.config/nvim
+    sudo ln -sf /home/$USER/.local/share/rouxshell/.zshrc /root/.zshrc
+    sudo ln -s /home/$USER/.local/share/rouxshell/.config/zsh /root/.config/zsh
+    sudo ln -sf /home/$USER/.local/share/rouxshell/.config/starship.toml /root/.config/starship.toml
+    sudo ln -s /home/$USER/.local/share/rouxshell/.config/nvim /root/.config/nvim
     sudo mkdir -p /root/.cache/wal
-    sudo ln -s /home/$USER/.noir-dotfiles/.cache/wal/colors-wal.vim /root/.cache/wal/colors-wal.vim
+    sudo ln -s /home/$USER/.local/share/rouxshell/.cache/wal/colors-wal.vim /root/.cache/wal/colors-wal.vim
 
     return 0
     ;;
   No)
-    echo "→ Skipping installation of Noir Dotfiles..."
+    echo "→ Skipping installation of rouxshell..."
     return 0
     ;;
   esac
@@ -643,7 +643,7 @@ sudo systemctl enable ollama
 sudo systemctl enable tlp
 sudo systemctl enable thermald
 
-# Install Noir Dotfiles
+# Install rouxshell
 until install_dotfiles; do :; done
 
 choice_reboot=$(gum choose "Yes" "No" --header "INSTALLATION IS COMPLETE. Would you like to reboot now?")
