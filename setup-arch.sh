@@ -532,7 +532,8 @@ done
 
 # Create user folders
 mkdir -p /home/$USER/Data/{Code,Media,My}
-mkdir -p /home/$USER/.local/{bin,share/backgrounds,share/icons}
+mkdir -p /home/$USER/.local/{bin,share/backgrounds,share/themes,share/icons}
+mkdir -p /home/$USER/.config/{calibre,cava,gtk-3.0,gtk-4.0,'Code - OSS/User'}
 
 # Set global variables
 set_variables
