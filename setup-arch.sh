@@ -297,7 +297,6 @@ packages_apps=(
   "gnome-multi-writer"
 
   # AI
-  "ollama"
   "ollama-cuda"
 
   # Other
@@ -309,6 +308,7 @@ packages_apps=(
   "clock-rs-git"
   "czkawka-gui-bin"
   "yt-dlp"
+  "youtube-dl-gui-bin"
 )
 
 packages_fonts=(
