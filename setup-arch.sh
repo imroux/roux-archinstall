@@ -456,11 +456,8 @@ install_gaming_tools() {
 }
 
 setup_mpd() {
-  mkdir ~/.local/share/mpd
-  touch ~/.local/share/mpd/database
-  mkdir ~/.local/share/mpd/playlists
-  touch ~/.local/share/mpd/state
-  touch ~/.local/share/mpd/sticker.sql
+  mkdir -p /home/$USER/.local/share/mpd/playlists
+  touch /home/$USER/.local/share/mpd/{database,state,sticker.sql}
 
   systemctl --user enable --now mpd.service
   mpc update
@@ -475,7 +472,7 @@ install_dotfiles() {
   Yes)
     echo "→ Installing rouxshell..."
 
-    cd ~ || exit
+    cd /home/$USER || exit
     case "$choice_wallpapers" in
     Yes)
       git clone --depth 1 --recurse-submodules https://github.com/imroux/rouxshell.git /home/$USER/.local/share/rouxshell
@@ -497,8 +494,8 @@ install_dotfiles() {
     sudo ln -s /home/$USER/.local/share/rouxshell/.config/zsh /root/.config/zsh
     sudo ln -sf /home/$USER/.local/share/rouxshell/.config/starship.toml /root/.config/starship.toml
     sudo ln -s /home/$USER/.local/share/rouxshell/.config/nvim /root/.config/nvim
-    sudo mkdir -p /root/.cache/wal
-    sudo ln -s /home/$USER/.local/share/rouxshell/.cache/wal/colors-wal.vim /root/.cache/wal/colors-wal.vim
+    # sudo mkdir -p /root/.cache/wal
+    # sudo ln -s /home/$USER/.local/share/rouxshell/.cache/wal/colors-wal.vim /root/.cache/wal/colors-wal.vim
 
     return 0
     ;;
@@ -534,8 +531,8 @@ while true; do
 done
 
 # Create user folders
-mkdir -p /home/$USER/Data/{Code,Media,My}
-mkdir -p /home/$USER/.local/{bin,share/backgrounds,share/themes,share/icons}
+mkdir -p /home/$USER/Data
+mkdir -p /home/$USER/.local/{bin,share/{backgrounds,themes,icons}}
 mkdir -p /home/$USER/.config/{calibre,cava,gtk-3.0,gtk-4.0,'Code - OSS/User'}
 
 # Set global variables
