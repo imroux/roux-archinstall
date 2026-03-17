@@ -488,6 +488,7 @@ install_dotfiles() {
     cd /home/$USER/.local/share/rouxshell || exit
     stow . -t /home/$USER
 
+    matugen image /home/$USER/.local/share/backgrounds/arcane/jinx_18.png
     bat cache --build
     sudo flatpak override --filesystem=xdg-data/themes
     flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
