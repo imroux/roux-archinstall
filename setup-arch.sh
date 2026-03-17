@@ -102,6 +102,8 @@ packages_common_utils=(
   "ffmpegthumbs"
   "sshpass"
   "wtype"
+  "dosfstools"
+  "exfatprogs"
 
   # Audio utils
   "playerctl"
@@ -253,6 +255,7 @@ packages_apps=(
   "vim"
   "nano"
   "code"
+  "code-marketplace"
   "ghex"
 
   # Media players & radios
@@ -261,6 +264,7 @@ packages_apps=(
   "rmpc"
   "mpv"
   "shortwave"
+  "aimp"
 
   # File managers
   "dolphin"
@@ -276,7 +280,7 @@ packages_apps=(
   "okular"
   "libreoffice-fresh"
   "obsidian"
-  "nomacs"
+  "gwenview"
 
   # Messengers
   "discord"
