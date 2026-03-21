@@ -574,11 +574,11 @@ sudo pacman -S --needed --noconfirm rustup
 rustup default stable
 
 # Install yay AUR Helper
-check_yay="$(sudo pacman -Qs yay | grep "local" | grep "yay")"
-if [ -n "${check_yay}" ]; then
+check_yay="$(sudo pacman -Qs yay | grep "yay")"
+if [ -z "${check_yay}" ]; then
   echo "→ Installing yay..."
   sudo pacman -S --needed --noconfirm git base-devel
-  git clone https://aur.archlinux.org/yay.git /tmp/yay
+  git clone --depth 1 https://aur.archlinux.org/yay.git /tmp/yay
   cd /tmp/yay
   makepkg -si --needed --noconfirm
 fi
