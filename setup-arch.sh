@@ -348,12 +348,12 @@ packages_nvidia=(
 set_variables() {
   sudo pacman -S --needed --noconfirm gum
 
-  choice_backup_hook=$(gum choose "Yes" "No" --header "Would you like to setup a pacman hook that creates a copy of the /boot directory?")
-  choice_microcode=$(gum choose "Intel" "AMD" "None" --header "Would you like to install processor microcode?")
-  choice_nvidia=$(gum choose "Yes" "No" --header "Would you like to install Nvidia drivers?")
+  choice_backup_hook=$(gum choose "No" "Yes" --header "Would you like to setup a pacman hook that creates a copy of the /boot directory?")
+  choice_microcode=$(gum choose "None" "Intel" "AMD" --header "Would you like to install processor microcode?")
+  choice_nvidia=$(gum choose "No" "Yes" --header "Would you like to install Nvidia drivers?")
   choice_wm=$(gum choose "hyprland" "niri" "awesome" "i3" --no-limit --header "Choose window managers to be installed.")
   choice_apps=$(gum choose "Yes" "No" --header "Would you like to install apps (browsers, file managers, terminal emulators, etc.)?")
-  choice_gaming_tools=$(gum choose "Yes" "No" --header "Would you like to install gaming tools?")
+  choice_gaming_tools=$(gum choose "No" "Yes" --header "Would you like to install gaming tools?")
   choice_dotfiles=$(gum choose "Yes" "No" --header "Would you like to install rouxshell?")
   choice_wallpapers=$(gum choose "Yes" "No" --header "Would you like to install Roux Wallpapers?")
 }
