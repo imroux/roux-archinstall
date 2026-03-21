@@ -147,16 +147,6 @@ packages_common_utils=(
   # Container management
   "podman"
 
-  # Dotfiles & ricing
-  "stow"
-  "nwg-look"
-  "adw-gtk-theme"
-  "bibata-cursor-theme"
-  "tela-circle-icon-theme-dracula"
-  "qt5ct-kde"
-  "qt6ct-kde"
-  "quickshell-git"
-
   # Shell & terminal utils
   "zsh"
   "starship"
@@ -175,6 +165,16 @@ packages_common_utils=(
   # Portals
   "xdg-desktop-portal-gtk"
   "xdg-desktop-portal-hyprland"
+
+  # Dotfiles & ricing
+  "stow"
+  "nwg-look"
+  "adw-gtk-theme"
+  "bibata-cursor-theme"
+  "tela-circle-icon-theme-dracula"
+  "quickshell-git"
+  "qt5ct-kde"
+  "qt6ct-kde"
 )
 
 packages_common_x11=(
