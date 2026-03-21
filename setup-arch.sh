@@ -172,6 +172,7 @@ packages_common_utils=(
   "adw-gtk-theme"
   "bibata-cursor-theme"
   "tela-circle-icon-theme-dracula"
+  "matugen"
   "quickshell-git"
   "qt5ct-kde"
   "qt6ct-kde"
