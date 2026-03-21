@@ -491,7 +491,7 @@ install_dotfiles() {
     matugen image /home/$USER/.local/share/backgrounds/arcane/jinx_18.png
     bat cache --build
     sudo flatpak override --filesystem=xdg-data/themes
-    flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+    flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark --assumeyes
 
     # Link user configs with root configs
     sudo mkdir /root/.config
