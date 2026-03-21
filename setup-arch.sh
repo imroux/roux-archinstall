@@ -277,7 +277,7 @@ packages_apps=(
 
   # Readers & image viewers
   "foliate"
-  "mcomix"
+  "mcomix-git"
   "okular"
   "libreoffice-fresh"
   "obsidian"
