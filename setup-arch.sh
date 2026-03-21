@@ -581,6 +581,8 @@ if [ -z "${check_yay}" ]; then
   git clone --depth 1 https://aur.archlinux.org/yay.git /tmp/yay
   cd /tmp/yay
   makepkg -si --needed --noconfirm
+else
+  echo "✓ Package yay is already installed"
 fi
 
 # Do an initial update
