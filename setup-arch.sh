@@ -165,6 +165,7 @@ packages_common_utils=(
   # Portals
   "xdg-desktop-portal-gtk"
   "xdg-desktop-portal-hyprland"
+  "xdg-desktop-portal-kde"
 
   # Dotfiles & ricing
   "stow"
