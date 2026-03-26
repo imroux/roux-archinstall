@@ -244,7 +244,8 @@ packages_i3=(
 packages_apps=(
   # Terminals
   "ghostty"
-  "alacritty"
+  "kitty"
+  "konsole"
 
   # Web browsers
   "firefox"
