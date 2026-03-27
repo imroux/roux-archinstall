@@ -64,6 +64,7 @@ packages_common_utils=(
   "wget"
   "net-tools"
   "unzip"
+  "unrar"
   "rsync"
   "glibc"
   "pkgconf-pkg-config"
@@ -117,6 +118,7 @@ packages_common_utils=(
   "pipewire-audio"
   "libpulse"
   "wireplumber"
+  "sox"
 
   # Power management
   "tlp"
