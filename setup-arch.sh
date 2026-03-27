@@ -207,7 +207,7 @@ packages_common_wayland=(
   "rofi"
   "waybar"
   "mako"
-  "swww"
+  "awww"
 )
 
 packages_hyprland=(
