@@ -262,6 +262,7 @@ packages_apps=(
   "code"
   "code-marketplace"
   "ghex"
+  "meld"
 
   # Media players & radios
   "mpd"
@@ -497,6 +498,7 @@ install_dotfiles() {
     bat cache --build
     sudo flatpak override --filesystem=xdg-data/themes
     flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark --assumeyes
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
     # Link user configs with root configs
     sudo mkdir /root/.config
