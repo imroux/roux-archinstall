@@ -494,6 +494,7 @@ install_dotfiles() {
     cd /home/$USER/.local/share/rouxshell || exit
     stow . -t /home/$USER
 
+    awww-daemon & # For matugen to set wallpaper
     matugen image /home/$USER/.local/share/backgrounds/arcane/jinx_18.png --source-color-index 0
     bat cache --build
     sudo flatpak override --filesystem=xdg-data/themes
