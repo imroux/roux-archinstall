@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S sh -c 'sudo pacman -S --needed --noconfirm gum git >/dev/null && exec bash "$@"' --
 
 # Install required packages
 install_packages() {
@@ -58,16 +58,13 @@ install_packages() {
 }
 
 packages_common_utils=(
-  # System utils & networking
+  # Core utils
   "pacman-contrib"
-  "curl"
   "wget"
   "net-tools"
   "unzip"
   "unrar"
   "rsync"
-  "glibc"
-  "pkgconf-pkg-config"
   "brightnessctl"
   "bluez"
   "bluez-utils"
@@ -75,16 +72,17 @@ packages_common_utils=(
   "iwd"
   "wireless_tools"
   # "rofi-bluetooth-git"
+  "networkmanager"
   "networkmanager-dmenu"
   "network-manager-applet"
   "openvpn"
   "networkmanager-openvpn"
   "rofi-power-menu"
-  "sddm"
+  "greetd"
+  "greetd-regreet"
+  "cage"
   "ntfs-3g"
-  "acpi"
-  "libva-nvidia-driver"
-  "zstd"
+  "upower"
   "bind"
   "man-db"
   "man-pages"
@@ -97,14 +95,15 @@ packages_common_utils=(
   "gvfs-smb"
   "dkms"
   "archlinux-xdg-menu"
-  "gtk4"
-  "ark"
+  # "ark"
   "ffmpegthumbnailer"
   "ffmpegthumbs"
   "sshpass"
   "wtype"
   "dosfstools"
   "exfatprogs"
+  "cliphist"
+  "zram-generator"
 
   # Audio utils
   "playerctl"
@@ -120,10 +119,6 @@ packages_common_utils=(
   "wireplumber"
   "sox"
 
-  # Power management
-  "tlp"
-  "thermald"
-
   # Development
   "base-devel"
   "git"
@@ -138,26 +133,22 @@ packages_common_utils=(
   "nodejs"
   "npm"
   "pnpm"
-  "deno"
-  "bun-bin"
   "uv"
-  "python-pip"
   "python-pipx"
-  "python3-gobject"
+  "python-gobject"
   "dart-sass"
 
   # Container management
-  "podman"
+  # "podman"
 
   # Shell & terminal utils
   "zsh"
-  "starship"
   "fzf"
   "zoxide"
-  "mlocate"
-  "less"
-  "ripgrep"
+  "starship"
   "lsd"
+  "plocate"
+  "ripgrep"
   "bat"
   "bat-extras"
   "cava"
@@ -167,18 +158,16 @@ packages_common_utils=(
   # Portals
   "xdg-desktop-portal-gtk"
   "xdg-desktop-portal-hyprland"
-  "xdg-desktop-portal-kde"
 
   # Dotfiles & ricing
   "stow"
   "nwg-look"
+  "gtk4"
   "adw-gtk-theme"
   "bibata-cursor-theme"
   "tela-circle-icon-theme-dracula"
   "matugen"
-  "quickshell-git"
-  "qt5ct-kde"
-  "qt6ct-kde"
+  "rofi"
 )
 
 packages_common_x11=(
@@ -187,9 +176,7 @@ packages_common_x11=(
   "dex"
   "xdotool"
   "xclip"
-  "cliphist"
   "xinput"
-  "rofi"
   "polybar"
   "dunst"
   "feh"
@@ -204,9 +191,7 @@ packages_common_wayland=(
   "wlr-randr"
   "wl-clipboard"
   "wl-clip-persist"
-  "cliphist"
-  "rofi-wayland"
-  "rofi"
+  # "rofi-wayland"
   "waybar"
   "mako"
   "awww"
@@ -245,22 +230,17 @@ packages_i3=(
 
 packages_apps=(
   # Terminals
-  "ghostty"
   "kitty"
-  "konsole"
 
   # Web browsers
   "firefox"
   "librewolf-bin"
-  "brave-bin"
-  "zen-browser-bin"
 
   # Text & hex editors
   "neovim"
   "vim"
   "nano"
-  "code"
-  "code-marketplace"
+  "zed"
   "ghex"
   "meld"
 
@@ -273,28 +253,25 @@ packages_apps=(
   "aimp"
 
   # File managers
-  "dolphin"
   "nautilus"
   "yazi"
 
   # Password managers
-  "keepassxc"
+  "secrets"
 
   # Readers & image viewers
   "foliate"
   "mcomix-git"
-  "okular"
+  "papers"
   "libreoffice-fresh"
   "obsidian"
-  "gwenview"
+  "loupe"
 
   # Messengers
   "discord"
-  "franz-bin"
-  "halloy-bin"
 
   # Disk space visualizers
-  "filelight"
+  "baobab"
   "ncdu"
   "gdu"
 
@@ -307,26 +284,28 @@ packages_apps=(
   "gnome-multi-writer"
 
   # AI
-  "ollama-cuda"
+  # "ollama-cuda"
 
   # Other
   "imagemagick"
-  "qbittorrent"
-  "nicotine+"
-  "amule"
+  "transmission-gtk"
   "qalculate-gtk"
   "clock-rs-git"
   "czkawka-gui-bin"
   "yt-dlp"
   "youtube-dl-gui-bin"
+  "spotdl"
 )
 
 packages_fonts=(
   "ttf-hack-nerd"
+  "ttf-liberation"
+  "ttf-dejavu"
+  "ttf-opensans"
   "noto-fonts"
+  "noto-fonts-extra"
   "noto-fonts-cjk"
   "noto-fonts-emoji"
-  "noto-fonts-extra"
   "otf-font-awesome"
 )
 
@@ -349,11 +328,10 @@ packages_nvidia=(
   "lib32-nvidia-utils"
   "nvidia-utils"
   "nvidia-settings"
+  "libva-nvidia-driver"
 )
 
 set_variables() {
-  sudo pacman -S --needed --noconfirm gum
-
   choice_backup_hook=$(gum choose "No" "Yes" --header "Would you like to setup a pacman hook that creates a copy of the /boot directory?")
   choice_microcode=$(gum choose "None" "Intel" "AMD" --header "Would you like to install processor microcode?")
   choice_nvidia=$(gum choose "No" "Yes" --header "Would you like to install Nvidia drivers?")
@@ -370,7 +348,7 @@ setup_backup_hook() {
     echo "→ Setting up pacman boot backup hook..."
     echo "→ Configuring /boot backup when pacman transactions are made..."
     sudo -i -u root /bin/bash <<EOF
-mkdir /etc/pacman.d/hooks
+mkdir -p /etc/pacman.d/hooks
 echo "[Trigger]
 Operation = Upgrade
 Operation = Install
@@ -411,14 +389,6 @@ install_window_managers() {
       ;;
     esac
   done
-}
-
-install_misc() {
-  # Rofi Power Menu
-  pipx install git+https://github.com/cjbassi/rofi-power
-
-  # SpotDL
-  pipx install spotdl
 }
 
 install_microcode() {
@@ -466,8 +436,10 @@ install_gaming_tools() {
 }
 
 setup_mpd() {
-  mkdir -p /home/$USER/.local/share/mpd/playlists
-  touch /home/$USER/.local/share/mpd/{database,state,sticker.sql}
+  [[ "$choice_apps" != "Yes" ]] && return 0
+
+  mkdir -p $HOME/.local/share/mpd/playlists
+  touch $HOME/.local/share/mpd/{database,state,sticker.sql}
 
   systemctl --user enable --now mpd.service
   mpc update
@@ -478,46 +450,74 @@ install_flatpaks() {
 }
 
 install_dotfiles() {
-  case "$choice_dotfiles" in
-  Yes)
-    echo "→ Installing rouxshell..."
-
-    cd /home/$USER || exit
-    case "$choice_wallpapers" in
-    Yes)
-      git clone --depth 1 --recurse-submodules https://github.com/imroux/rouxshell.git /home/$USER/.local/share/rouxshell
-      ;;
-    No)
-      git clone --depth 1 https://github.com/imroux/rouxshell.git /home/$USER/.local/share/rouxshell
-      ;;
-    esac
-    cd /home/$USER/.local/share/rouxshell || exit
-    stow . -t /home/$USER
-
-    awww-daemon & # For matugen to set wallpaper
-    matugen image /home/$USER/.local/share/backgrounds/arcane/jinx_18.png --source-color-index 0
-    bat cache --build
-    sudo flatpak override --filesystem=xdg-data/themes
-    flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark --assumeyes
-    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-
-    # Link user configs with root configs
-    sudo mkdir /root/.config
-    sudo ln -sf /home/$USER/.local/share/rouxshell/.zshrc /root/.zshrc
-    sudo ln -s /home/$USER/.local/share/rouxshell/.config/zsh /root/.config/zsh
-    sudo ln -sf /home/$USER/.local/share/rouxshell/.config/starship.toml /root/.config/starship.toml
-    sudo ln -s /home/$USER/.local/share/rouxshell/.config/nvim /root/.config/nvim
-    # sudo mkdir -p /root/.cache/wal
-    # sudo ln -s /home/$USER/.local/share/rouxshell/.cache/wal/colors-wal.vim /root/.cache/wal/colors-wal.vim
-
-    return 0
-    ;;
-  No)
+  if [[ "$choice_dotfiles" != "Yes" ]]; then
     echo "→ Skipping installation of rouxshell..."
     return 0
-    ;;
-  esac
+  fi
+
+  echo "→ Installing rouxshell..."
+
+  local repo_url="https://github.com/imroux/rouxshell.git"
+  local target_dir="$HOME/.local/share/rouxshell"
+  local wallpaper="$HOME/.local/share/backgrounds/resident-evil/resident-evil-9-requiem/requiem_2.jpg"
+
+  # Handle existing repo directory safely
+  if [[ -d "$target_dir/.git" ]]; then
+    echo "→ Existing repository found, pulling latest changes..."
+    git -C "$target_dir" pull --ff-only || return 1
+    [[ "$choice_wallpapers" == "Yes" ]] && git -C "$target_dir" submodule update --init --recursive --depth 1
+  else
+    rm -rf "$target_dir"
+    local clone_args=(--depth 1)
+    [[ "$choice_wallpapers" == "Yes" ]] && clone_args+=(--recurse-submodules --shallow-submodules)
+    git clone "${clone_args[@]}" "$repo_url" "$target_dir" || return 1
+  fi
+
+  # Stow dotfiles without altering the caller's working directory
+  stow -d "$target_dir/home" -t "$HOME" --no-folding . || return 1
+  sudo cp -r --no-preserve=ownership "$target_dir/system/." /
+
+  # Apply wallpaper & matugen theme safely
+  if command -v matugen >/dev/null 2>&1; then
+    if [[ -f "$wallpaper" ]]; then
+      if command -v awww-daemon >/dev/null 2>&1 && [[ -n "${WAYLAND_DISPLAY:-}" ]]; then
+        pgrep -x awww-daemon >/dev/null || (awww-daemon >/dev/null 2>&1 & disown)
+        sleep 0.5 # Give daemon a moment to create its Wayland socket
+      fi
+      matugen image "$wallpaper" --source-color-index 0
+    else
+      echo "⚠ Wallpaper not found at $wallpaper (skipping matugen theme generation)"
+    fi
+  fi
+
+  # Optional post-install commands (guarded so missing tools don't crash the script)
+  command -v bat >/dev/null 2>&1 && bat cache --build
+  command -v tldr >/dev/null 2>&1 && tldr --update
+
+  # if command -v flatpak >/dev/null 2>&1; then
+  #   sudo flatpak override --filesystem=xdg-data/themes
+  #   flatpak install -y flathub org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+  # fi
+
+  if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+  fi
+
+  # Link user configs with root configs cleanly
+  sudo mkdir -p /root/.config
+  local root_links=(
+    "home/.zshrc:/root/.zshrc"
+    "home/.config/zsh:/root/.config/zsh"
+    "home/.config/starship.toml:/root/.config/starship.toml"
+    "home/.config/nvim:/root/.config/nvim"
+  )
+  for pair in "${root_links[@]}"; do
+    local src="$target_dir/${pair%%:*}"
+    local dest="${pair##*:}"
+    [[ -e "$src" ]] && sudo ln -sfn "$src" "$dest"
+  done
 }
+
 
 clear
 
@@ -547,9 +547,9 @@ while true; do
 done
 
 # Create user folders
-mkdir -p /home/$USER/Data
-mkdir -p /home/$USER/.local/{bin,share/{backgrounds,themes,icons}}
-mkdir -p /home/$USER/.config/{calibre,cava,gtk-3.0,gtk-4.0,'Code - OSS/User',zsh}
+mkdir -p $HOME/Data
+mkdir -p $HOME/.local/{bin,share/{backgrounds,themes,icons}}
+mkdir -p $HOME/.config/{calibre,cava,gtk-3.0,gtk-4.0,'Code - OSS/User',zsh}
 
 # Set global variables
 set_variables
@@ -559,18 +559,33 @@ setup_backup_hook
 
 # Fix laptop lid acting like airplane mode key
 echo "→ Fixing laptop lid acting like airplane mode key..."
-sudo -i -u root /bin/bash <<EOF
-mkdir /etc/rc.d
-echo "#!/usr/bin/env bash
-# Fix laptop lid acting like airplane mode key
-setkeycodes d7 240
-setkeycodes e058 142" > /etc/rc.d/rc.local
+sudo tee /etc/systemd/system/fix-lid-keys.service >/dev/null <<'EOF'
+[Unit]
+Description=Fix laptop lid keycodes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/setkeycodes d7 240
+ExecStart=/usr/bin/setkeycodes e058 142
+
+[Install]
+WantedBy=multi-user.target
 EOF
+# sudo -i -u root /bin/bash <<EOF
+# mkdir -p /etc/rc.d
+# echo "#!/usr/bin/env bash
+# # Fix laptop lid acting like airplane mode key
+# setkeycodes d7 240
+# setkeycodes e058 142" > /etc/rc.d/rc.local
+# EOF
 
 # ZRAM configuration
 echo "→ Configuring ZRAM..."
-sudo echo "[zram0]
-zram-size = min(ram, 8192)" >/etc/systemd/zram-generator.conf
+sudo tee /etc/systemd/zram-generator.conf >/dev/null <<'EOF'
+[zram0]
+zram-size = min(ram, 8192)
+compression-algorithm = zstd
+EOF
 
 # Pacman eye-candy features
 echo "→ Enabling colours and parallel downloads for pacman..."
@@ -582,16 +597,20 @@ sudo pacman -S --needed --noconfirm rustup
 rustup default stable
 
 # Install yay AUR Helper
-check_yay="$(sudo pacman -Qs yay | grep "yay")"
-if [ -z "${check_yay}" ]; then
+if ! command -v yay >/dev/null 2>&1; then
   echo "→ Installing yay..."
-  sudo pacman -S --needed --noconfirm git base-devel
-  git clone --depth 1 https://aur.archlinux.org/yay.git /tmp/yay
-  cd /tmp/yay
-  makepkg -si --needed --noconfirm
+  sudo pacman -S --needed --noconfirm base-devel
+  rm -rf /tmp/yay
+  git clone --depth 1 https://aur.archlinux.org/yay.git /tmp/yay || exit 1
+  (
+    cd /tmp/yay || exit 1
+    makepkg -si --needed --noconfirm
+  ) || exit 1
+  rm -rf /tmp/yay
 else
   echo "✓ Package yay is already installed"
 fi
+
 
 # Do an initial update
 echo "→ Updating the system..."
@@ -615,9 +634,6 @@ echo "→ Switching user and root shell to Zsh..."
 sudo chsh -s /usr/bin/zsh $USER
 sudo chsh -s /usr/bin/zsh root
 
-# Install miscellaneous packages
-install_misc
-
 # Install processor microcode
 install_microcode
 
@@ -634,32 +650,28 @@ install_gaming_tools
 echo "→ Setting up MPD..."
 setup_mpd
 # Install flatpaks
-echo "→ Installing flatpaks..."
-sudo pacman -S --needed --noconfirm flatpak
-install_flatpaks
+# echo "→ Installing flatpaks..."
+# sudo pacman -S --needed --noconfirm flatpak
+# install_flatpaks
 
 # Set right-click dragging to resize windows in GNOME
 echo "→ Setting right-click dragging to resize windows in GNOME..."
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
 
-# Update tealdeer cache
-echo "→ Updating tealdeer cache..."
-tldr --update
-
 # Enable services
 echo "→ Enabling systemctl services..."
-systemctl --user enable pipewire
-systemctl --user enable syncthing
-sudo systemctl enable sddm
+systemctl --user enable pipewire.socket pipewire-pulse.socket wireplumber.service
+if [[ "$choice_apps" == "Yes" ]]; then
+  command -v syncthing >/dev/null 2>&1 && systemctl --user enable syncthing.service
+fi
+sudo systemctl enable greetd.service
 sudo systemctl enable bluetooth
-sudo systemctl enable podman
-sudo systemctl enable ollama
-## Thermal monitoring and overheat prevention
-sudo systemctl enable tlp
-sudo systemctl enable thermald
+sudo systemctl enable fix-lid-keys.service
+# sudo systemctl enable podman
+# sudo systemctl enable ollama
 
 # Install rouxshell
-until install_dotfiles; do :; done
+install_dotfiles || echo "⚠ Dotfiles installation encountered an error."
 
 choice_reboot=$(gum choose "Yes" "No" --header "INSTALLATION IS COMPLETE. Would you like to reboot now?")
 case "$choice_reboot" in
