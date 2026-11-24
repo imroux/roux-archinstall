@@ -7,6 +7,10 @@ install_packages() {
   local installed_count=0
   local failed_count=0
   local failed_packages=()
+  local log_file="failed_packages.log"
+
+  # Create/reset log file
+  : > "$log_file"
 
   echo "Starting installation of $total_packages packages..."
   echo "================================================"
@@ -31,6 +35,9 @@ install_packages() {
       echo "✗ Failed to install: $package"
       ((failed_count++))
       failed_packages+=("$package")
+
+      # Log failed package with timestamp
+      echo "[$(date '+%Y-%m-%d %H:%M:%S')] $package" >> "$log_file"
     fi
 
     echo
@@ -43,16 +50,19 @@ install_packages() {
   echo "Successfully installed: $installed_count"
   echo "Failed to install: $failed_count"
 
-  if [ $failed_count -gt 0 ]; then
+  if [ "$failed_count" -gt 0 ]; then
+    echo
     echo "Failed packages:"
     for failed_pkg in "${failed_packages[@]}"; do
       echo "  - $failed_pkg"
     done
+
     echo
-    echo "You can try to install failed packages individually later."
+    echo "Failed packages have been logged to: $log_file"
     return 1
   else
     echo "All packages installed successfully!"
+    echo "No failed packages."
     return 0
   fi
 }
