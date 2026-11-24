@@ -514,10 +514,10 @@ install_dotfiles() {
   fi
 
   # Link user configs with root configs cleanly
-  sudo mkdir -p /root/.config
+  sudo mkdir -p /root/.config/zsh
   local root_links=(
     "home/.zshrc:/root/.zshrc"
-    "home/.config/zsh:/root/.config/zsh"
+    "home/.config/zsh/*:/root/.config/zsh/"
     "home/.config/starship.toml:/root/.config/starship.toml"
     "home/.config/nvim:/root/.config/nvim"
   )
