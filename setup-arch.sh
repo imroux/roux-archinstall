@@ -234,7 +234,7 @@ packages_apps=(
 
   # Web browsers
   "firefox"
-  "librewolf-bin"
+  "librewolf"
 
   # Text & hex editors
   "neovim"
@@ -324,7 +324,7 @@ packages_firmware=(
 )
 
 packages_nvidia=(
-  "nvidia-dkms"
+  "nvidia-open"
   "lib32-nvidia-utils"
   "nvidia-utils"
   "nvidia-settings"
@@ -484,7 +484,7 @@ install_dotfiles() {
         pgrep -x awww-daemon >/dev/null || (awww-daemon >/dev/null 2>&1 & disown)
         sleep 0.5 # Give daemon a moment to create its Wayland socket
       fi
-      matugen image "$wallpaper" --source-color-index 0
+      matugen image "$wallpaper" --source-color-index 3
     else
       echo "⚠ Wallpaper not found at $wallpaper (skipping matugen theme generation)"
     fi
