@@ -180,20 +180,6 @@ packages_common_utils=(
   "rofi"
 )
 
-packages_common_x11=(
-  "xorg"
-  "xsel"
-  "dex"
-  "xdotool"
-  "xclip"
-  "xinput"
-  "polybar"
-  "dunst"
-  "feh"
-  "maim"
-  "picom"
-)
-
 packages_common_wayland=(
   "qt5-wayland"
   "qt6-wayland"
@@ -201,7 +187,6 @@ packages_common_wayland=(
   "wlr-randr"
   "wl-clipboard"
   "wl-clip-persist"
-  # "rofi-wayland"
   "waybar"
   "mako"
   "awww"
@@ -217,25 +202,6 @@ packages_hyprland=(
   "hyprlock"
   "hypridle"
   "uwsm"
-)
-
-packages_niri=(
-  "niri"
-  "xwayland-satellite"
-  "xdg-desktop-portal-gnome"
-  "hyprlock"
-)
-
-packages_awesome=(
-  "awesome"
-  "lain"
-  "polkit-gnome"
-)
-
-packages_i3=(
-  "i3-wm"
-  "i3lock"
-  "autotiling"
 )
 
 packages_apps=(
@@ -345,7 +311,7 @@ set_variables() {
   choice_backup_hook=$(gum choose "No" "Yes" --header "Would you like to setup a pacman hook that creates a copy of the /boot directory?")
   choice_microcode=$(gum choose "None" "Intel" "AMD" --header "Would you like to install processor microcode?")
   choice_nvidia=$(gum choose "No" "Yes" --header "Would you like to install Nvidia drivers?")
-  choice_wm=$(gum choose "hyprland" "niri" "awesome" "i3" --no-limit --header "Choose window managers to be installed.")
+  choice_hyprland=$(gum choose "No" "Yes" --header "Would you like to install Hyprland?")
   choice_apps=$(gum choose "Yes" "No" --header "Would you like to install apps (browsers, file managers, terminal emulators, etc.)?")
   choice_gaming_tools=$(gum choose "No" "Yes" --header "Would you like to install gaming tools?")
   choice_dotfiles=$(gum choose "Yes" "No" --header "Would you like to install rouxshell?")
@@ -377,28 +343,15 @@ EOF
   esac
 }
 
-install_window_managers() {
-  IFS = ', '
-  for choice in "${choice_wm[@]}"; do
-    case "$choice" in
-    hyprland*)
-      install_packages "${packages_hyprland[@]}"
-      install_packages "${packages_common_wayland[@]}"
-      ;;
-    niri*)
-      install_packages "${packages_niri[@]}"
-      install_packages "${packages_common_wayland[@]}"
-      ;;
-    awesome*)
-      install_packages "${packages_awesome[@]}"
-      install_packages "${packages_common_x11[@]}"
-      ;;
-    i3*)
-      install_packages "${packages_i3[@]}"
-      install_packages "${packages_common_x11[@]}"
-      ;;
-    esac
-  done
+install_hyprland() {
+  if [[ "$choice_hyprland" != "Yes" ]]; then
+    echo "→ Skipping installation of Hyprland..."
+    return 0
+  fi
+
+  echo "→ Installing Hyprland..."
+  install_packages "${packages_hyprland[@]}"
+  install_packages "${packages_common_wayland[@]}"
 }
 
 install_microcode() {
@@ -504,11 +457,6 @@ install_dotfiles() {
   command -v bat >/dev/null 2>&1 && bat cache --build
   command -v tldr >/dev/null 2>&1 && tldr --update
 
-  # if command -v flatpak >/dev/null 2>&1; then
-  #   sudo flatpak override --filesystem=xdg-data/themes
-  #   flatpak install -y flathub org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
-  # fi
-
   if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
   fi
@@ -581,13 +529,6 @@ ExecStart=/usr/bin/setkeycodes e058 142
 [Install]
 WantedBy=multi-user.target
 EOF
-# sudo -i -u root /bin/bash <<EOF
-# mkdir -p /etc/rc.d
-# echo "#!/usr/bin/env bash
-# # Fix laptop lid acting like airplane mode key
-# setkeycodes d7 240
-# setkeycodes e058 142" > /etc/rc.d/rc.local
-# EOF
 
 # ZRAM configuration
 echo "→ Configuring ZRAM..."
@@ -631,7 +572,7 @@ echo "→ Installing utility packages..."
 install_packages "${packages_common_utils[@]}"
 
 # Install window managers
-install_window_managers
+install_hyprland
 
 # Install fonts and missing firmware
 echo "→ Installing fonts..."
@@ -659,10 +600,6 @@ install_gaming_tools
 # Setup mandatory mpd folders and files
 echo "→ Setting up MPD..."
 setup_mpd
-# Install flatpaks
-# echo "→ Installing flatpaks..."
-# sudo pacman -S --needed --noconfirm flatpak
-# install_flatpaks
 
 # Set right-click dragging to resize windows in GNOME
 echo "→ Setting right-click dragging to resize windows in GNOME..."
@@ -677,8 +614,6 @@ fi
 sudo systemctl enable greetd.service
 sudo systemctl enable bluetooth
 sudo systemctl enable fix-lid-keys.service
-# sudo systemctl enable podman
-# sudo systemctl enable ollama
 
 # Install rouxshell
 install_dotfiles || echo "⚠ Dotfiles installation encountered an error."
