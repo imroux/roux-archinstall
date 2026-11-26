@@ -78,19 +78,11 @@ packages_common_utils=(
   "brightnessctl"
   "bluez"
   "bluez-utils"
-  "blueman"
   "iwd"
   "wireless_tools"
-  # "rofi-bluetooth-git"
   "networkmanager"
-  "networkmanager-dmenu"
-  "network-manager-applet"
   "openvpn"
   "networkmanager-openvpn"
-  "rofi-power-menu"
-  "greetd"
-  "greetd-regreet"
-  "cage"
   "ntfs-3g"
   "upower"
   "bind"
@@ -106,6 +98,7 @@ packages_common_utils=(
   "dkms"
   "archlinux-xdg-menu"
   # "ark"
+  "ffmpeg"
   "ffmpegthumbnailer"
   "ffmpegthumbs"
   "sshpass"
@@ -130,8 +123,6 @@ packages_common_utils=(
   "sox"
 
   # Development
-  "base-devel"
-  "git"
   "git-lfs"
   "lazygit"
   "cmake"
@@ -165,10 +156,6 @@ packages_common_utils=(
   "btop"
   "fastfetch"
 
-  # Portals
-  "xdg-desktop-portal-gtk"
-  "xdg-desktop-portal-hyprland"
-
   # Dotfiles & ricing
   "stow"
   "nwg-look"
@@ -177,7 +164,6 @@ packages_common_utils=(
   "bibata-cursor-theme"
   "tela-circle-icon-theme-dracula"
   "matugen"
-  "rofi"
 )
 
 packages_common_wayland=(
@@ -190,6 +176,20 @@ packages_common_wayland=(
   "waybar"
   "mako"
   "awww"
+
+  # Portals
+  "xdg-desktop-portal-gtk"
+  "xdg-desktop-portal-hyprland"
+
+  # Applets and menus
+  "blueman"
+  "networkmanager-dmenu"
+  "network-manager-applet"
+  "rofi"
+  "rofi-power-menu"
+  "greetd"
+  "greetd-regreet"
+  "cage"
 )
 
 packages_hyprland=(
@@ -242,6 +242,7 @@ packages_apps=(
 
   # Messengers
   "discord"
+  "telegram-desktop"
 
   # Disk space visualizers
   "baobab"
@@ -599,8 +600,10 @@ systemctl --user enable pipewire.socket pipewire-pulse.socket wireplumber.servic
 if [[ "$choice_apps" == "Yes" ]]; then
   command -v syncthing >/dev/null 2>&1 && systemctl --user enable syncthing.service
 fi
-sudo systemctl enable greetd.service
-sudo systemctl enable bluetooth
+if [[ "$choice_hyprland" == "Yes" ]]; then
+  sudo systemctl enable greetd.service
+  sudo systemctl enable bluetooth
+fi
 sudo systemctl enable fix-lid-keys.service
 
 # Install rouxshell
