@@ -1,4 +1,4 @@
-#!/usr/bin/env -S sh -c 'sudo pacman -S --needed --noconfirm gum git >/dev/null && exec bash "$@"' --
+#!/usr/bin/env -S sh -c 'sudo pacman -S --needed --noconfirm gum git base-devel >/dev/null && exec bash "$@"' --
 
 # Install required packages
 install_packages() {
@@ -221,9 +221,6 @@ packages_apps=(
   "meld"
 
   # Media players & radios
-  "mpd"
-  "mpc"
-  "rmpc"
   "mpv"
   "shortwave"
   "aimp"
@@ -273,6 +270,12 @@ packages_apps=(
   "spotdl"
 )
 
+packages_mpd=(
+  "mpd"
+  "mpc"
+  "rmpc"
+)
+
 packages_fonts=(
   "ttf-hack-nerd"
   "ttf-liberation"
@@ -313,6 +316,7 @@ set_variables() {
   choice_nvidia=$(gum choose "No" "Yes" --header "Would you like to install Nvidia drivers?")
   choice_hyprland=$(gum choose "No" "Yes" --header "Would you like to install Hyprland?")
   choice_apps=$(gum choose "Yes" "No" --header "Would you like to install apps (browsers, file managers, terminal emulators, etc.)?")
+  choice_mpd=$(gum choose "Yes" "No" --header "Would you like to setup MPD (Music Player Daemon)?")
   choice_gaming_tools=$(gum choose "No" "Yes" --header "Would you like to install gaming tools?")
   choice_dotfiles=$(gum choose "Yes" "No" --header "Would you like to install rouxshell?")
   choice_wallpapers=$(gum choose "Yes" "No" --header "Would you like to install Roux Wallpapers?")
@@ -399,10 +403,14 @@ install_gaming_tools() {
 }
 
 setup_mpd() {
-  [[ "$choice_apps" != "Yes" ]] && return 0
+  [[ "$choice_mpd" != "Yes" ]] && return 0
+
+  echo "→ Setting up MPD..."
 
   mkdir -p $HOME/.local/share/mpd/playlists
   touch $HOME/.local/share/mpd/{database,state,sticker.sql}
+
+  install_packages "${packages_mpd[@]}"
 
   systemctl --user enable --now mpd.service
   mpc update
@@ -417,6 +425,11 @@ install_dotfiles() {
     echo "→ Skipping installation of rouxshell..."
     return 0
   fi
+
+  echo "→ Creating user directories..."
+  mkdir -p $HOME/Data
+  mkdir -p $HOME/.local/{bin,share/{backgrounds,themes,icons}}
+  mkdir -p $HOME/.config/{cava,gtk-3.0,gtk-4.0,zsh}
 
   echo "→ Installing rouxshell..."
 
@@ -493,22 +506,6 @@ cat <<"EOF"
 (_____)----------------------------------------------------------------------------(_____)
 EOF
 
-while true; do
-  read -rp "Would you like to proceed with setup? (y/n): " answer
-  case "$answer" in
-  [Yy]*) break ;; # Proceed with the script
-  *)
-    echo "Exiting."
-    exit 1
-    ;; # Exit the script
-  esac
-done
-
-# Create user folders
-mkdir -p $HOME/Data
-mkdir -p $HOME/.local/{bin,share/{backgrounds,themes,icons}}
-mkdir -p $HOME/.config/{calibre,cava,gtk-3.0,gtk-4.0,'Code - OSS/User',zsh}
-
 # Set global variables
 set_variables
 
@@ -550,7 +547,6 @@ rustup default stable
 # Install yay AUR Helper
 if ! command -v yay >/dev/null 2>&1; then
   echo "→ Installing yay..."
-  sudo pacman -S --needed --noconfirm base-devel
   rm -rf /tmp/yay
   git clone --depth 1 https://aur.archlinux.org/yay.git /tmp/yay || exit 1
   (
@@ -562,8 +558,7 @@ else
   echo "✓ Package yay is already installed"
 fi
 
-
-# Do an initial update
+# Initial update
 echo "→ Updating the system..."
 yay -Syu --needed --noconfirm
 
@@ -571,7 +566,7 @@ yay -Syu --needed --noconfirm
 echo "→ Installing utility packages..."
 install_packages "${packages_common_utils[@]}"
 
-# Install window managers
+# Install Hyprland
 install_hyprland
 
 # Install fonts and missing firmware
@@ -580,25 +575,18 @@ install_packages "${packages_fonts[@]}"
 echo "→ Installing potentially missing firmware..."
 install_packages "${packages_firmware[@]}"
 
-# Switch user and root shell to Zsh
-echo "→ Switching user and root shell to Zsh..."
+# Switch user and root shell to zsh
+echo "→ Switching user and root shell to zsh..."
 sudo chsh -s /usr/bin/zsh $USER
 sudo chsh -s /usr/bin/zsh root
 
-# Install processor microcode
+# Install optional packages
 install_microcode
-
-# Setup Nvidia drivers
 install_nvidia_drivers
-
-# Install apps
 install_apps
-
-# Install gaming tools
 install_gaming_tools
 
 # Setup mandatory mpd folders and files
-echo "→ Setting up MPD..."
 setup_mpd
 
 # Set right-click dragging to resize windows in GNOME
